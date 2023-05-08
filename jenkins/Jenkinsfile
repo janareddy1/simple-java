@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent sample-3
         
   
     stages {
