@@ -1,5 +1,5 @@
 pipeline {
-    agent sample-3
+    agent mynode1
         
   
     stages {
