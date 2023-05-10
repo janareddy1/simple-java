@@ -1,20 +1,44 @@
 pipeline {
     agent any
+    parameters {
+    choice(
+      name: 'environment',
+      description: 'choose your environment',
+      choices: ['', 'dev', 'test', 'uat', 'prod']
+    )
+
+    choice(
+      name: 'Deployment',
+      description: 'Service which you want to deploy.',
+      choices: ['', 'api1','api2']
+    )
+
+    string(
+      name: 'Suffix',
+      description: 'Usually a dash followed by the branch name, no spaces.'
+    )
+    string(
+      name: 'ImageTag',
+      description: 'The tag of the Docker image to deploy.'
+    )
+  }
         
   
     stages {
         stage('Build') {
             steps {
-                sh 'npm install'
-                sh 'npm run build'
+               echo "You have selected env :  ${params.environment}"
+               echo "You have selected service :  ${params.Deployment}"
+               echo "You have selected env :  ${params.suffix}"
+               echo "You have selected env :  ${params.ImageTag}"
                
 		echo "executing build stage"
             }
         }
         stage('Test') {
             steps {
-                sh 'npm test'
-               	echo "executing test stage"
+                
+               	echo "echo "You have selected env :  ${params.environment}""
 
             }
             // post {
@@ -25,7 +49,7 @@ pipeline {
         }
         stage('Deliver') {
             steps {
-                 sh 'npm run deploy'
+                // sh 'npm run deploy'
                	echo "executing delivery stage"
             }
         }
