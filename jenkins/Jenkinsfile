@@ -1,57 +1,11 @@
+Jenkinsfile (Declarative Pipeline)
+/* Requires the Docker Pipeline plugin */
 pipeline {
-    agent any
-    parameters {
-    choice(
-      name: 'environment',
-      description: 'choose your environment',
-      choices: ['', 'dev', 'test', 'uat', 'prod']
-    )
-
-    choice(
-      name: 'Deployment',
-      description: 'Service which you want to deploy.',
-      choices: ['', 'api1','api2']
-    )
-
-    string(
-      name: 'Suffix',
-      description: 'Usually a dash followed by the branch name, no spaces.'
-    )
-    string(
-      name: 'ImageTag',
-      description: 'The tag of the Docker image to deploy.'
-    )
-  }
-        
-  
+    agent { docker { image 'maven:3.9.0-eclipse-temurin-11' } }
     stages {
-        stage('Build') {
+        stage('build') {
             steps {
-               echo "You have selected env :  ${params.environment}"
-               echo "You have selected service :  ${params.Deployment}"
-               echo "You have selected env :  ${params.suffix}"
-               echo "You have selected env :  ${params.ImageTag}"
-               
-		echo "executing build stage"
-            }
-        }
-        stage('Test') {
-            steps {
-                
-               	echo "You have selected env :  ${params.environment}"
-
-            }
-            // post {
-            //     always {
-            //         junit 'target/surefire-reports/*.xml'
-            //     }
-            // }
-        }
-        stage('Deliver') {
-            steps {
-                // sh 'npm run deploy'
-               	echo "executing delivery stage"
+                sh 'mvn --version'
             }
         }
     }
-}
